@@ -1,15 +1,20 @@
 .page {
   min-height: 100svh;
   display: grid;
-  grid-template-columns: minmax(360px, 0.92fr) minmax(520px, 1.08fr);
-  background: #f8f7f3;
+  place-items: center;
+  overflow: hidden;
+  padding: 32px 20px;
+  background:
+    radial-gradient(circle at 15% 20%, rgba(217, 242, 95, 0.2), transparent 28%),
+    radial-gradient(circle at 88% 82%, rgba(111, 174, 145, 0.24), transparent 27%),
+    #173b35;
 }
 
 .story {
+  display: none;
   position: relative;
   min-height: 100svh;
   overflow: hidden;
-  display: flex;
   flex-direction: column;
   justify-content: space-between;
   padding: 42px clamp(36px, 5vw, 76px) 38px;
@@ -203,21 +208,24 @@
 
 .loginPanel {
   position: relative;
-  min-height: 100svh;
-  display: grid;
-  place-items: center;
-  padding: 116px clamp(40px, 7vw, 112px) 62px;
+  width: min(100%, 530px);
+  padding: 42px 54px 48px;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-radius: 28px;
+  background: rgba(248, 247, 243, 0.98);
+  box-shadow: 0 30px 80px rgba(5, 24, 20, 0.28);
 }
 
 .mobileBrand {
-  display: none;
+  display: inline-flex;
   color: #173b35;
+  margin-bottom: 42px;
 }
 
 .accountPrompt {
   position: absolute;
-  top: 43px;
-  right: clamp(40px, 5vw, 72px);
+  top: 42px;
+  right: 54px;
   display: flex;
   align-items: center;
   gap: 14px;
@@ -427,55 +435,23 @@
   text-decoration: none;
 }
 
-@media (max-width: 920px) {
-  .page {
-    grid-template-columns: minmax(310px, 0.8fr) minmax(460px, 1.2fr);
-  }
-
-  .story {
-    padding-inline: 34px;
-  }
-
-  .story h1 {
-    font-size: 48px;
-  }
-
-  .workspaceCard {
-    width: 100%;
-  }
-
-  .loginPanel {
-    padding-inline: 46px;
-  }
-}
-
 @media (max-width: 760px) {
   .page {
-    display: block;
-  }
-
-  .story {
-    display: none;
+    padding: 16px;
   }
 
   .loginPanel {
-    min-height: 100svh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 116px 24px 44px;
+    padding: 34px 28px 38px;
+    border-radius: 22px;
   }
 
   .mobileBrand {
-    position: absolute;
-    top: 28px;
-    left: 24px;
-    display: inline-flex;
+    margin-bottom: 36px;
   }
 
   .accountPrompt {
-    top: 29px;
-    right: 24px;
+    top: 35px;
+    right: 28px;
   }
 
   .accountPrompt span {
@@ -497,34 +473,32 @@
 }
 
 @media (max-width: 390px) {
-  .loginPanel {
-    padding-inline: 18px;
+  .page {
+    place-items: start center;
+    overflow: visible;
+    padding: 12px;
   }
 
-  .mobileBrand {
-    left: 18px;
+  .loginPanel {
+    width: 100%;
+    padding: 30px 22px 34px;
   }
 
   .accountPrompt {
-    right: 18px;
-  }
-
-  .mobileBrand > span:last-child {
-    display: none;
+    top: 31px;
+    right: 22px;
   }
 }
 
-@media (max-height: 720px) and (min-width: 761px) {
-  .storyContent {
-    margin: 38px 0 28px;
-  }
-
-  .workspaceCard {
-    margin-top: 26px;
+@media (max-height: 700px) {
+  .page {
+    place-items: start center;
+    overflow: visible;
+    padding-block: 20px;
   }
 
   .loginPanel {
-    padding-block: 88px 36px;
+    padding-block: 34px 38px;
   }
 }
 
