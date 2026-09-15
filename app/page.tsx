@@ -38,41 +38,7 @@ function LockIcon() {
 export default function Home() {
   return (
     <main className={styles.page}>
-      <section className={styles.story} aria-label="Morrow workspace introduction">
-        <a className={styles.brand} href="#" aria-label="Morrow home">
-          <span className={styles.brandMark}>
-            <SparkIcon />
-          </span>
-          <span>Morrow</span>
-        </a>
-
-        <div className={styles.storyContent}>
-          <p className={styles.eyebrow}>One calm place for your best work</p>
-          <h1>Pick up right where you left off.</h1>
-          <p className={styles.storyCopy}>
-            Plans, conversations, and bright ideas—all together and ready when
-            you are.
-          </p>
-
-          <div className={styles.workspaceCard} aria-hidden="true">
-            <div className={styles.cardTopline}>
-              <span>Today</span>
-              <span className={styles.avatar}>AY</span>
-            </div>
-            <p>Tuesday, September 15</p>
-            <div className={styles.progressRow}>
-              <span className={styles.check}>✓</span>
-              <span className={styles.progressLine} />
-            </div>
-            <div className={styles.progressRow}>
-              <span className={styles.dot} />
-              <span className={`${styles.progressLine} ${styles.progressLineShort}`} />
-            </div>
-          </div>
-        </div>
-
-        <p className={styles.quote}>“A little clarity changes everything.”</p>
-      </section>
+      
 
       <section className={styles.loginPanel} aria-labelledby="login-title">
         <div className={styles.mobileBrand}>
