@@ -49,7 +49,7 @@ export default function Home() {
         </div>
 
         <div className={styles.accountPrompt}>
-          <span>New to Morrow?</span>
+        
           <a href="#">Create an account</a>
         </div>
 

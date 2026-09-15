@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Sign in | Morrow",
+  title: "Sign in",
   description: "Sign in to your Morrow workspace.",
 };
 
