@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Sign in",
-  description: "Sign in to your Morrow workspace.",
+  title: "Product Collection",
+  description: "Explore the latest product collection.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
