@@ -1,7 +1,5 @@
-import Link from "next/link";
-
+import { HeaderAuthActions } from "@/components/HeaderAuthActions";
 import { ProductCard } from "@/components/ProductCard";
-import { Button } from "@/components/ui/button";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
 import { products } from "@/data/products";
 
@@ -13,7 +11,7 @@ export default function Home() {
           <nav className="hidden items-center gap-8 text-sm font-medium md:flex" aria-label="Main navigation">
             <HoverCard openDelay={120} closeDelay={80}>
               <HoverCardTrigger asChild>
-                <a className="rounded-md px-3 py-2 font-serif text-xl font-semibold italic tracking-wide transition-colors hover:bg-accent hover:text-accent-foreground"href="#shop">Shop</a>
+                <a className="rounded-md px-3 py-2 font-serif text-xl font-semibold italic tracking-wide transition-colors hover:bg-accent hover:text-accent-foreground" href="#shop">Shop</a>
               </HoverCardTrigger>
               <HoverCardContent align="start" className="flex w-50 flex-col gap-0.3">
                 <div className="font-semibold">@fer202</div>
@@ -25,14 +23,7 @@ export default function Home() {
             </HoverCard>
           </nav>
 
-          <div className="flex items-center gap-2 sm:gap-3">
-            <Button variant="secondary" asChild className="rounded-full px-3 sm:px-4 hover:-translate-y-0.5 sm:px-5">
-              <Link href="/login" data-testid="btn-login">Login</Link>
-            </Button>
-            <Button variant="outline" asChild className="rounded-full px-4 shadow-sm transition-transform hover:-translate-y-0.5 sm:px-5">
-              <Link href="/register" data-testid="btn-register">Register</Link>
-            </Button>
-          </div>
+          <HeaderAuthActions />
         </div>
       </header>
 

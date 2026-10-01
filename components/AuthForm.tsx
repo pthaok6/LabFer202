@@ -2,7 +2,9 @@
 
 import { FormEvent, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
+import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -31,25 +33,55 @@ function validate(values: FormValues, mode: AuthMode): FormErrors {
 
 export function AuthForm({ mode }: { mode: AuthMode }) {
   const isLogin = mode === "login";
+  const router = useRouter();
+  const { signIn, signUp } = useAuth();
   const [values, setValues] = useState<FormValues>(initialValues);
   const [errors, setErrors] = useState<FormErrors>({});
   const [submitted, setSubmitted] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [authError, setAuthError] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
   const updateField = (field: keyof FormValues, value: string) => {
     const nextValues = { ...values, [field]: value };
     setValues(nextValues);
     setSuccess(false);
+    setAuthError("");
     if (submitted) setErrors(validate(nextValues, mode));
   };
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const nextErrors = validate(values, mode);
     const isValid = Object.keys(nextErrors).length === 0;
     setSubmitted(true);
     setErrors(nextErrors);
-    setSuccess(isValid);
+    setSuccess(false);
+    setAuthError("");
+
+    if (!isValid) return;
+
+    setSubmitting(true);
+
+    try {
+      const result = isLogin
+        ? await signIn(values.email.trim(), values.password)
+        : await signUp(values.email.trim(), values.password);
+
+      if (result.error) {
+        setAuthError(result.error.message);
+        return;
+      }
+
+      if (isLogin) {
+        router.push("/");
+        router.refresh();
+      } else {
+        setSuccess(true);
+      }
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const prefix = isLogin ? "login" : "register";
@@ -102,9 +134,11 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
                     </div>
                   )}
 
-                  {success && <p data-testid="form-success" role="status" className="rounded-xl border border-primary/20 bg-primary/10 px-4 py-3 text-sm font-bold text-primary">{isLogin ? "Login successful (demo)" : "Registration successful (demo)"}</p>}
+                  {authError && <p data-testid="error-auth" role="alert" className="rounded-xl border border-destructive/25 bg-destructive/10 px-4 py-3 text-sm font-semibold text-destructive">{authError}</p>}
 
-                  <Button data-testid={`${prefix}-submit`} type="submit" className="mt-1 h-[52px] w-full gap-2">{isLogin ? "Sign in" : "Create account"}<span aria-hidden="true"></span></Button>
+                  {success && !isLogin && <p data-testid="form-success" role="status" className="rounded-xl border border-primary/20 bg-primary/10 px-4 py-3 text-sm font-bold text-primary">Registration successful</p>}
+
+                  <Button data-testid={`${prefix}-submit`} type="submit" disabled={submitting} className="mt-1 h-[52px] w-full gap-2">{submitting ? "Please wait..." : isLogin ? "Sign in" : "Create account"}<span aria-hidden="true"></span></Button>
                 </form>
 
                 <p className="mt-7 text-center text-sm text-muted-foreground">
