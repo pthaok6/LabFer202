@@ -15,7 +15,7 @@ export default function Home() {
               </HoverCardTrigger>
               <HoverCardContent align="start" className="flex w-50 flex-col gap-0.3">
                 <div className="font-semibold">@fer202</div>
-                  <div>Lab 2 by Phuong Thao</div>
+                  <div>Lab FER by Phuong Thao</div>
                   <div className="mt-1 text-xs text-muted-foreground">
                     September 2026
                   </div>
