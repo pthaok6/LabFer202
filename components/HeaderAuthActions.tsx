@@ -4,10 +4,12 @@ import { useState } from "react";
 import Link from "next/link";
 
 import { useAuth } from "@/contexts/AuthContext";
+import { useFavorites } from "@/contexts/FavoritesContext";
 import { Button } from "@/components/ui/button";
 
 export function HeaderAuthActions() {
   const { user, loading, signOut } = useAuth();
+  const { favorites } = useFavorites();
   const [signingOut, setSigningOut] = useState(false);
 
   if (loading) {
@@ -23,6 +25,9 @@ export function HeaderAuthActions() {
 
     return (
       <div className="flex min-w-0 items-center gap-2 sm:gap-3">
+        <Link href="/favorites" data-testid="link-favorites" className="rounded-full px-2 py-2 text-sm font-medium text-foreground hover:bg-accent sm:px-3">
+          Favorites <span data-testid="favorites-count">{favorites.length}</span>
+        </Link>
         <Link
           href="/account"
           data-testid="user-email"

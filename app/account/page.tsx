@@ -17,13 +17,15 @@ export default function AccountPage() {
     }
   }, [loading, router, user]);
 
-  if (loading || !user) {
+  if (loading) {
     return (
       <main className="grid min-h-screen place-items-center bg-background">
         <span className="size-8 animate-spin rounded-full border-2 border-muted border-t-primary" aria-label="Loading account" />
       </main>
     );
   }
+
+  if (!user) return null;
 
   return (
     <main className="grid min-h-screen place-items-center bg-muted/40 px-4 py-10">

@@ -1,10 +1,14 @@
-# Lab 3 — Global Auth State with Supabase
+# Lab 4 & 5 — Next.js Rendering, API Routes & Supabase Favorites
 
-Dự án Next.js App Router mở rộng từ Lab 2, gồm danh sách sản phẩm, xác thực email/password thật bằng Supabase Auth và trạng thái đăng nhập toàn cục bằng React Context.
+Dự án Next.js App Router phát triển tiếp từ Lab 3, gồm xác thực Supabase, trang chi tiết render từ server, API sản phẩm, tìm kiếm qua URL và danh sách yêu thích lưu trong Supabase.
 
 ## Chức năng
 
 - Trang chủ hiển thị 6 sản phẩm từ `data/products.ts` bằng component `ProductCard`.
+- Trang chủ lọc theo `q` và `category` từ URL; HTML kết quả được render ở server.
+- Trang `/products/[id]` được tạo sẵn khi build, có metadata riêng và trả 404 cho id không tồn tại.
+- API `/api/products` và `/api/products/[id]` dùng chung dữ liệu sản phẩm.
+- `FavoritesContext` dùng `useReducer` để tải, thêm, xóa yêu thích với cập nhật lạc quan và rollback khi Supabase từ chối.
 - Đăng ký và đăng nhập thật với Supabase Auth.
 - `AuthContext` quản lý `user`, `session`, `loading`, `signUp`, `signIn` và `signOut`.
 - Session được khôi phục bằng `getSession()` và đồng bộ bằng `onAuthStateChange()`.
@@ -21,6 +25,10 @@ Dự án Next.js App Router mở rộng từ Lab 2, gồm danh sách sản phẩ
 | `/login` | Đăng nhập bằng Supabase |
 | `/register` | Tạo tài khoản Supabase |
 | `/account` | Trang tài khoản được bảo vệ |
+| `/products/[id]` | Chi tiết sản phẩm render từ server |
+| `/api/products` | Danh sách JSON; hỗ trợ `q` và `category` |
+| `/api/products/[id]` | Một sản phẩm JSON hoặc 404 |
+| `/favorites` | Danh sách yêu thích của người đã đăng nhập |
 
 ## Cài đặt
 
@@ -54,6 +62,23 @@ Mở [http://localhost:3000](http://localhost:3000).
 5. Kiểm tra đăng nhập đúng, đăng nhập sai mật khẩu, refresh session và Logout.
 6. Thêm hai biến môi trường tương tự vào Vercel rồi redeploy production.
 
+## Bảng favorites
+
+Chạy nguyên script trong [`supabase/favorites.sql`](supabase/favorites.sql) bằng SQL Editor của **cùng project Supabase Lab 3**. Script tạo bảng `public.favorites`, bật RLS và đúng ba policy `read own`, `insert own`, `delete own` cho vai trò `authenticated`. Không dùng service-role key trong ứng dụng.
+
+Sau đó thử đăng nhập, bấm nút trái tim ở trang chủ/trang chi tiết, tải lại `/favorites`, và đăng xuất. Yêu thích được lưu theo `user_id`; khách chưa đăng nhập bấm nút sẽ được đưa tới `/login`.
+
+Ví dụ kiểm tra API:
+
+```text
+/api/products
+/api/products?q=glass
+/api/products?category=Decor
+/api/products?q=marble&category=Decor
+/api/products/1
+/api/products/9999
+```
+
 ## Kiến trúc xác thực
 
 ```text
@@ -83,11 +108,16 @@ Client-side validation chạy trước khi gọi Supabase:
 
 Lỗi do Supabase trả về được render riêng trong `data-testid="error-auth"`. Đăng ký thành công hiển thị `Registration successful` trong `data-testid="form-success"`; đăng nhập thành công chuyển về `/`.
 
-## Test hooks Lab 3
+## Test hooks Lab 3–5
 
 - `/login`, `/register`: `error-auth`
 - Header đã đăng nhập: `user-email`, `btn-logout`
 - `/account`: `account-page`, `account-email`
+- `/products/[id]`: `product-detail`, `detail-name`, `detail-price`, `detail-description`, `detail-category`, `link-back`
+- `/`: `link-detail`, `btn-favorite`, `search-input`, `category-select`, `btn-search`, `no-results`
+- Header đã đăng nhập: `link-favorites`, `favorites-count`
+- `/favorites`: `favorites-page`, `favorite-item`, `favorites-empty`
+- Loading, error và 404: `loading`, `error-boundary`, `btn-retry`, `not-found`
 
 Các test hooks Lab 2 như `product-list`, `product-card`, `btn-login`, `btn-register`, các input và lỗi client vẫn được giữ nguyên.
 
@@ -113,17 +143,26 @@ npm run build
 ```text
 app/
 ├── account/page.tsx
+├── api/products/route.ts
+├── api/products/[id]/route.ts
+├── favorites/page.tsx
 ├── login/page.tsx
+├── products/[id]/page.tsx
 ├── register/page.tsx
+├── error.tsx
 ├── layout.tsx
+├── loading.tsx
+├── not-found.tsx
 └── page.tsx
 components/
 ├── ui/
 ├── AuthForm.tsx
+├── FavoriteButton.tsx
 ├── HeaderAuthActions.tsx
 └── ProductCard.tsx
 contexts/
-└── AuthContext.tsx
+├── AuthContext.tsx
+└── FavoritesContext.tsx
 data/
 └── products.ts
 lib/
@@ -131,6 +170,8 @@ lib/
 └── utils.ts
 public/
 └── products/
+supabase/
+└── favorites.sql
 .env.example
 components.json
 ```
