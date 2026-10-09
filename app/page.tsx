@@ -21,7 +21,7 @@ export default async function Home({ searchParams }: HomeProps) {
           <nav className="hidden items-center gap-8 text-sm font-medium md:flex" aria-label="Main navigation">
             <HoverCard openDelay={120} closeDelay={80}>
               <HoverCardTrigger asChild>
-                <a className="rounded-md px-3 py-2 font-serif text-xl font-semibold italic tracking-wide transition-colors hover:bg-accent hover:text-accent-foreground" href="#shop">Shop</a>
+                <a className="rounded-md px-3 py-2 font-serif text-xl font-semibold italic tracking-wide transition-colors hover:bg-accent hover:text-accent-foreground" href="https://my-app-nextjs-xi.vercel.app/">Shop</a>
               </HoverCardTrigger>
               <HoverCardContent align="start" className="flex w-50 flex-col gap-0.3">
                 <div className="font-semibold">@fer202</div>
