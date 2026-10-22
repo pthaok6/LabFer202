@@ -137,7 +137,7 @@ export function ReviewsPanel({ productId }: { productId: number }) {
       {deleteError && <p data-testid="error-review" className="mt-2 text-sm text-red-600">{deleteError}</p>}
     </div> : <div className="mb-6"><ReviewForm productId={productId} onSubmit={async (rating, comment) => { await submitReview(rating, comment); setSubmissionSuccess(true); }} submitLabel="Submit review" /></div>}
     <div className="grid gap-4">{reviews.length === 0 ? <p data-testid="reviews-empty" className="text-sm text-muted-foreground">No reviews yet.</p> : reviews.map((review) => <article key={review.id} data-testid="review-item" className="rounded-lg border border-border p-4">
-      <div className="flex justify-between gap-4"><strong data-testid="review-author">{review.author}</strong><span data-testid="review-rating">{review.rating}</span></div>
+      <div className="flex justify-between gap-4"><strong data-testid="review-author">{review.author}</strong><span data-testid="review-rating" aria-label={`${review.rating} out of 5 stars`} className="flex items-center gap-0.5">{[1, 2, 3, 4, 5].map((star) => <span key={star} aria-hidden="true" className={`text-2xl leading-none ${star <= review.rating ? "text-amber-400" : "text-neutral-400"}`}>{star <= review.rating ? "★" : "☆"}</span>)}</span></div>
       <p data-testid="review-comment" className="mt-2 whitespace-pre-wrap">{review.comment}</p>
     </article>)}</div>
   </section>;
